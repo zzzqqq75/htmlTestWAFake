@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>Chat Mockup Generator — Fake WhatsApp, Instagram DM & TikTok Screenshots</title>
+<meta name="description" content="Free online chat mockup generator. Create realistic fake WhatsApp, Instagram DM and TikTok message screenshots in Arabic, English, Hebrew, Persian and more. Download high-resolution PNG." />
+<meta name="keywords" content="chat mockup generator, arabic whatsapp chat maker, fake whatsapp arabic generator, واتساب عربي محادثة وهمية, whatsapp chat generator, fake whatsapp screenshot, whatsapp screenshot maker, instagram dm generator, instagram chat mockup, tiktok message generator, fake conversation creator, chat screenshot creator, whatsapp mockup tool, social media chat generator, message screenshot maker, chat ui generator, conversation screenshot tool" />
+<link rel="canonical" href="/app/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Chat Mockup Generator — WhatsApp, Instagram & TikTok" />
+<meta property="og:description" content="Create realistic fake chat screenshots for WhatsApp, Instagram DM and TikTok. Arabic, English & RTL ready." />
+<meta property="og:url" content="/app/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Chat Mockup Generator" />
+<meta name="twitter:description" content="Realistic WhatsApp, Instagram DM and TikTok chat screenshot generator with full Arabic & RTL support." />
+<link rel="manifest" href="/app/manifest.webmanifest" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2325D366'/%3E%3Cpath d='M20 44l3-8a14 14 0 1 1 5 5z' fill='white'/%3E%3C/svg%3E" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+tailwind.config = { darkMode: 'class' };
+</script>
+<style>
+  :root{
+    --wa-bg-light:#efeae2;
+    --wa-bg-dark:#0b141a;
+    --wa-header-light:#white;
+    --wa-header-dark:#1f2c33;
+    --wa-out-light:#d9fdd3;
+    --wa-out-dark:#005c4b;
+    --wa-in-light:#ffffff;
+    --wa-in-dark:#202c33;
+    --wa-text-light:#111b21;
+    --wa-text-dark:#000000;
+  }
+  html,body{height:100%;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Noto Sans Arabic","Noto Sans Hebrew","Noto Sans JP","Noto Sans KR","Noto Sans SC",sans-serif;}
+  .arabic, [dir="rtl"]{font-family:"Segoe UI","Noto Sans Arabic","Noto Naskh Arabic",Tahoma,Arial,sans-serif;}
+  .bidi-iso{unicode-bidi:isolate;}
+  .bubble{unicode-bidi:plaintext;}
+  /* WhatsApp doodle */
+.wa-doodle-light {
+  background-color: var(--wa-bg-light);
+    background-image:url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+  background-repeat: repeat;
+  background-size: 400px;
+}
+.wa-doodle-dark {
+  background-color: var(--wa-bg-dark);
+    background-image:url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  background-size: 400px;
+  filter: brightness(0.55) saturate(0.7);
+}
+  /* Phone frame */
+  .phone-frame{
+    width:380px;max-width:100%;
+    height:780px;
+    border-radius:48px;
+    background:#000;
+    padding:12px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.35), 0 0 0 2px #1a1a1a;
+    position:relative;
+  }
+  .phone-screen{
+    width:100%;height:100%;
+    border-radius:38px;
+    overflow:hidden;
+    position:relative;
+    background:#fff;
+    display:flex;flex-direction:column;
+  }
+  .notch{
+    position:absolute;top:8px;left:50%;transform:translateX(-50%);
+    width:120px;height:28px;background:#000;border-radius:0 0 18px 18px;z-index:30;
+  }
+  .android .notch{width:14px;height:14px;border-radius:50%;top:10px;}
+  .status-bar{
+    height:38px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:13px;font-weight:600;flex-shrink:0;
+    position:relative;z-index:20;
+  }
+  .android .status-bar{height:26px;font-size:11px;padding:0 14px;}
+  .nav-home{
+    height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    background:transparent;
+  }
+  .nav-home .bar{width:120px;height:4px;border-radius:3px;background:currentColor;opacity:.5;}
+  .android .nav-home{height:32px;gap:36px;}
+  .android .nav-home .pill{width:14px;height:14px;border:2px solid currentColor;opacity:.7;}
+  .android .nav-home .pill.sq{border-radius:3px;}
+  .android .nav-home .pill.tri{border:none;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:12px solid currentColor;opacity:.7;}
+  .android .nav-home .pill.cir{border-radius:50%;}
+  /* Bubbles */
+  .wa-bubble{position:relative;max-width:78%;padding:6px 8px 8px 10px;border-radius:8px;font-size:14.2px;line-height:19px;box-shadow:0 1px .5px rgba(11,20,26,.13);word-wrap:break-word;}
+  .wa-bubble.out{background:var(--wa-out-light);color:var(--wa-text-light);border-top-right-radius:0;}
+  .wa-bubble.in{background:var(--wa-in-light);color:var(--wa-text-light);border-top-left-radius:0;}
+  .phone-frame.dark .wa-bubble.out{background:var(--wa-out-dark);color:var(--wa-text-dark);}
+  .phone-frame.dark .wa-bubble.in{background:var(--wa-in-dark);color:var(--wa-text-dark);}
+  .wa-meta{font-size:11px;opacity:.55;margin-left:8px;display:inline-flex;align-items:center;gap:2px;float:right;margin-top:4px;line-height:1;}
+  .wa-tail-out,.wa-tail-in{position:absolute;top:0;width:8px;height:13px;}
+  .wa-tail-out{right:-8px;background:var(--wa-out-light);clip-path:polygon(0 0,100% 0,0 100%);}
+  .wa-tail-in{left:-8px;background:var(--wa-in-light);clip-path:polygon(0 0,100% 0,100% 100%);}
+  .phone-frame.dark .wa-tail-out{background:var(--wa-out-dark);}
+  .phone-frame.dark .wa-tail-in{background:var(--wa-in-dark);}
+  /* Instagram */
+  .ig-screen{background:#fff;color:#000;}
+  .phone-frame.dark .ig-screen{background:#000;color:#fff;}
+  .ig-bubble{max-width:70%;padding:9px 13px;border-radius:22px;font-size:14.5px;line-height:19px;word-wrap:break-word;}
+  .ig-bubble.in{background:#efefef;color:#000;}
+  .phone-frame.dark .ig-bubble.in{background:#262626;color:#fff;}
+  .ig-bubble.out{background:linear-gradient(135deg,#7638fa,#ed1d8f,#fcb045);color:#fff;}
+  .ig-gradient-ring{background:conic-gradient(from 180deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75);padding:2px;border-radius:50%;}
+  /* TikTok */
+  .tt-screen{background:#fff;color:#161823;}
+  .phone-frame.dark .tt-screen{background:#121212;color:#fff;}
+  .tt-bubble{max-width:72%;padding:10px 14px;border-radius:18px;font-size:14.5px;line-height:19px;word-wrap:break-word;}
+  .tt-bubble.in{background:#f1f1f2;color:#161823;}
+  .phone-frame.dark .tt-bubble.in{background:#2a2a2a;color:#fff;}
+  .tt-bubble.out{background:#fe2c55;color:#fff;}
+  /* Icons */
+  .ico{width:22px;height:22px;flex-shrink:0;display:inline-block;vertical-align:middle;}
+  .ico-sm{width:18px;height:18px;}
+  /* Editor */
+  .editor-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;}
+  .msg-row{transition:all .15s ease;}
+  .msg-row.dragging{opacity:.4;}
+  .grip{cursor:grab;}
+  .grip:active{cursor:grabbing;}
+  .scroll-area::-webkit-scrollbar{width:6px;}
+  .scroll-area::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px;}
+  /* Verified badge */
+  .verified{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;background:#1d9bf0;color:#fff;border-radius:50%;font-size:9px;font-weight:900;}
+  /* Responsive phone scaling */
+  @media (max-width: 1024px){
+    .app-main{grid-template-columns:1fr!important;}
+  }
+  @media (max-width: 480px){
+    .phone-frame{width:320px;height:660px;border-radius:40px;padding:10px;}
+    .phone-screen{border-radius:30px;}
+    .notch{width:100px;height:24px;}
+    .hdr-btn{padding:6px 8px!important;font-size:12px!important;}
+  }
+  @media (max-width: 360px){
+    .phone-frame{width:290px;height:600px;}
+  }
+  [hidden]{display:none!important;}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<header class="border-b bg-white sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold">C</div>
+      <div>
+        <h1 class="text-base font-bold leading-tight">Chat Mockup Generator</h1>
+        <p class="text-[11px] text-gray-500 leading-tight">WhatsApp · Instagram · TikTok</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="undoBtn" class="hdr-btn px-3 py-1.5 text-sm rounded-lg border hover:bg-gray-50" title="Undo">↶ Undo</button>
+      <button id="redoBtn" class="hdr-btn px-3 py-1.5 text-sm rounded-lg border hover:bg-gray-50" title="Redo">↷ Redo</button>
+      <button id="downloadBtn" class="hdr-btn px-3 py-1.5 text-sm rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700">⬇ PNG</button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main max-w-7xl mx-auto px-4 py-6 grid lg:grid-cols-[1fr_420px] gap-6">
+  <!-- Preview -->
+  <section class="flex justify-center items-start">
+    <div id="captureRoot" class="phone-frame" data-device="ios">
+      <div class="notch"></div>
+      <div id="phoneScreen" class="phone-screen"></div>
+    </div>
+  </section>
+
+  <!-- Editor -->
+  <aside class="space-y-4">
+    <!-- Platform & device -->
+    <div class="editor-card p-4 space-y-3">
+      <div class="grid grid-cols-3 gap-2" id="platformTabs">
+        <button data-platform="whatsapp" class="plat-btn px-2 py-2 rounded-lg border text-sm font-semibold">WhatsApp</button>
+        <button data-platform="instagram" class="plat-btn px-2 py-2 rounded-lg border text-sm font-semibold">Instagram</button>
+        <button data-platform="tiktok" class="plat-btn px-2 py-2 rounded-lg border text-sm font-semibold">TikTok</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2" id="deviceTabs">
+        <button data-device="ios" class="dev-btn px-2 py-2 rounded-lg border text-sm">iPhone</button>
+        <button data-device="android" class="dev-btn px-2 py-2 rounded-lg border text-sm">Android</button>
+      </div>
+      <label class="flex items-center justify-between text-sm">
+        <span>Dark mode</span>
+        <input type="checkbox" id="darkToggle" class="w-5 h-5" />
+      </label>
+    </div>
+
+    <!-- User info -->
+    <div class="editor-card p-4 space-y-3">
+      <h2 class="text-sm font-bold">Contact Info</h2>
+      <div class="flex items-center gap-3">
+        <label class="cursor-pointer">
+          <img id="avatarPreview" class="w-14 h-14 rounded-full object-cover bg-gray-200" alt="avatar"/>
+          <input type="file" id="avatarInput" accept="image/png,image/jpeg,image/jpg,image/webp" class="hidden"/>
+        </label>
+        <div class="flex-1 space-y-1">
+          <input id="contactName" type="text" placeholder="Contact name" class="w-full border rounded px-2 py-1.5 text-sm"/>
+          <input id="contactUsername" type="text" placeholder="@username (Instagram/TikTok)" class="w-full border rounded px-2 py-1.5 text-sm"/>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-sm">
+        <label class="flex items-center gap-2"><input type="checkbox" id="onlineToggle"/> Online</label>
+        <label class="flex items-center gap-2"><input type="checkbox" id="verifiedToggle"/> Verified</label>
+      </div>
+      <input id="lastSeen" type="text" placeholder="last seen today at 10:24" class="w-full border rounded px-2 py-1.5 text-sm"/>
+      <input id="statusTime" type="text" placeholder="Status bar time (e.g. 9:41)" class="w-full border rounded px-2 py-1.5 text-sm"/>
+    </div>
+
+    <!-- Messages -->
+    <div class="editor-card p-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold">Messages</h2>
+        <div class="flex gap-1">
+          <button id="addTextBtn" class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200">+ Text</button>
+          <label class="text-xs px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 cursor-pointer">
+            + Image
+            <input type="file" id="addImageInput" accept="image/png,image/jpeg,image/jpg,image/webp" class="hidden"/>
+          </label>
+        </div>
+      </div>
+      <ul id="msgList" class="space-y-2 max-h-[420px] overflow-auto scroll-area pr-1"></ul>
+    </div>
+
+    <p class="text-[11px] text-gray-500 text-center">Auto-saved locally · For mockups & education only</p>
+  </aside>
+</main>
+
+<!-- SEO content -->
+<section class="max-w-4xl mx-auto px-4 py-10 prose prose-sm">
+  <h2 class="text-xl font-bold mb-3">The most realistic fake chat screenshot generator</h2>
+  <p class="text-sm text-gray-700">Build pixel-perfect WhatsApp, Instagram DM and TikTok message screenshots in any language — including full Arabic (واتساب عربي), Hebrew, Persian and Urdu with proper right-to-left typography. Export as a transparent high-resolution PNG.</p>
+
+  <h3 class="text-lg font-bold mt-6">How to create a chat mockup</h3>
+  <ol class="list-decimal pl-5 text-sm text-gray-700 space-y-1">
+    <li>Choose a platform: WhatsApp, Instagram DM or TikTok.</li>
+    <li>Pick iPhone or Android and toggle dark mode.</li>
+    <li>Edit the contact name, avatar, status and verification badge.</li>
+    <li>Add, edit, reorder or delete messages — including images.</li>
+    <li>Click <strong>Download PNG</strong> for a 2× high-resolution export.</li>
+  </ol>
+
+  <h3 class="text-lg font-bold mt-6">FAQ</h3>
+  <details class="border-b py-2"><summary class="font-semibold cursor-pointer">Does it support Arabic and RTL?</summary><p class="text-sm text-gray-700 mt-1">Yes. Direction is auto-detected per message with Unicode bidi isolation, preserving Arabic punctuation correctly.</p></details>
+  <details class="border-b py-2"><summary class="font-semibold cursor-pointer">Are my chats stored online?</summary><p class="text-sm text-gray-700 mt-1">No — everything is saved only in your browser's local storage.</p></details>
+  <details class="border-b py-2"><summary class="font-semibold cursor-pointer">Can I add images to messages?</summary><p class="text-sm text-gray-700 mt-1">Yes, PNG, JPG, JPEG and WEBP are supported.</p></details>
+  <details class="border-b py-2"><summary class="font-semibold cursor-pointer">Is the WhatsApp wallpaper authentic?</summary><p class="text-sm text-gray-700 mt-1">We use the classic doodle pattern in both light and dark themes.</p></details>
+</section>
+
+<footer class="border-t bg-white py-6 text-center text-xs text-gray-500">
+  <p>© <span id="year"></span> Chat Mockup Generator. Not affiliated with WhatsApp, Instagram or TikTok.</p>
+</footer>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"SoftwareApplication",
+  "name":"Chat Mockup Generator",
+  "applicationCategory":"DesignApplication",
+  "operatingSystem":"Web",
+  "description":"Create realistic fake WhatsApp, Instagram DM and TikTok chat screenshots with full Arabic and RTL support.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Does it support Arabic and RTL?","acceptedAnswer":{"@type":"Answer","text":"Yes. Direction is auto-detected per message with Unicode bidi isolation."}},
+{"@type":"Question","name":"Are my chats stored online?","acceptedAnswer":{"@type":"Answer","text":"No, everything is saved locally in your browser."}},
+{"@type":"Question","name":"Can I add images?","acceptedAnswer":{"@type":"Answer","text":"Yes, PNG, JPG, JPEG and WEBP are supported."}}
+]}
+</script>
+
+<script>
+/* ==================== State ==================== */
+const LS_KEY = 'chat-mockup-v1';
+const defaultAvatar = "data:image/svg+xml;utf8,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='%23d1d5db'/><circle cx='32' cy='26' r='12' fill='%239ca3af'/><path d='M10 58c4-12 14-18 22-18s18 6 22 18z' fill='%239ca3af'/></svg>`);
+
+const initialState = {
+  platform:'whatsapp',
+  device:'ios',
+  dark:false,
+  contact:{ name:'Sara', username:'sara_92', avatar:defaultAvatar, online:true, verified:false, lastSeen:'online', statusTime:'9:41' },
+  messages:[
+    {id:uid(), type:'text', side:'in', text:'Hey! Are you free tonight? 🌙', time:'10:21', status:'read'},
+    {id:uid(), type:'text', side:'out', text:'Yes! Where do you want to go?', time:'10:22', status:'read'},
+    {id:uid(), type:'text', side:'in', text:'مرحبا، كيف حالك؟', time:'10:23', status:'read'},
+    {id:uid(), type:'text', side:'out', text:'بخير الحمد لله 🌹', time:'10:24', status:'delivered'}
+  ]
+};
+let state = load() || structuredClone(initialState);
+let history = [structuredClone(state)];
+let historyIdx = 0;
+
+function uid(){return Math.random().toString(36).slice(2,10);}
+function load(){try{const s=localStorage.getItem(LS_KEY);return s?JSON.parse(s):null;}catch{return null;}}
+function save(){localStorage.setItem(LS_KEY,JSON.stringify(state));}
+function commit(){
+  history = history.slice(0, historyIdx+1);
+  history.push(structuredClone(state));
+  if(history.length>50) history.shift();
+  historyIdx = history.length-1;
+  save(); render();
+}
+function undo(){ if(historyIdx>0){historyIdx--; state=structuredClone(history[historyIdx]); save(); render();} }
+function redo(){ if(historyIdx<history.length-1){historyIdx++; state=structuredClone(history[historyIdx]); save(); render();} }
+
+/* ==================== Helpers ==================== */
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+const RTL_RE = /[\u0590-\u05FF\u0600-\u06FF\u0700-\u074F\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+function dirOf(t){return RTL_RE.test(t||'')?'rtl':'ltr';}
+function statusTick(s){
+  if(s==='sent') return '<svg class="ico" style="width:15px;height:15px;vertical-align:middle" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 9l4 4 8-9"/></svg>';
+  if(s==='delivered') return '<svg style="width:18px;height:15px;vertical-align:middle" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 9l4 4 8-9"/><path d="M7 13l1 1 8-9"/></svg>';
+  if(s==='read') return '<svg style="width:18px;height:15px;vertical-align:middle;color:#53bdeb" viewBox="0 0 20 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 9l4 4 8-9"/><path d="M7 13l1 1 8-9"/></svg>';
+  return '';
+}
+
+/* ==================== Platform SVG Icons ==================== */
+const ICONS = {
+  // WhatsApp header
+  waBack: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  waVideo: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>',
+  waPhone: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>',
+  waMenu: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>',
+  waEmoji: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M8 14c1 1.5 2.5 2.5 4 2.5s3-1 4-2.5" stroke-linecap="round"/></svg>',
+  waPaperclip: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
+  waCamera: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M9 4l-2 2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3l-2-2H9zm3 14a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>',
+  waMic: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5.91-3a.9.9 0 0 0-.91.9 5 5 0 0 1-10 0 .9.9 0 1 0-1.8 0A6.8 6.8 0 0 0 11 18.7V21a1 1 0 0 0 2 0v-2.3a6.8 6.8 0 0 0 5.81-6.8.9.9 0 0 0-.9-.9z"/></svg>',
+  // Instagram
+  igBack: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  igPhone: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>',
+  igVideo: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
+  igCamera: '<svg viewBox="0 0 24 24" fill="#fff" style="width:18px;height:18px;"><path d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4zM9 2L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3.17L15 2H9z"/></svg>',
+  igMic: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  igImage: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+  igSticker: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6.5L21 11.5z"/><path d="M21 11.5L11.5 21v-7.5A2 2 0 0 1 13.5 11.5H21z"/></svg>',
+  igHeart: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  // TikTok
+  ttBack: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  ttFlag: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4M4 4h13l-2 4 2 4H4"/></svg>',
+  ttEmoji: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M8 14c1 1.5 2.5 2.5 4 2.5s3-1 4-2.5" stroke-linecap="round"/></svg>',
+  ttImage: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+};
+
+/* ==================== Render ==================== */
+const screen = document.getElementById('phoneScreen');
+const root = document.getElementById('captureRoot');
+
+function render(){
+  // platform tabs
+  document.querySelectorAll('.plat-btn').forEach(b=>{
+    const a = b.dataset.platform===state.platform;
+    b.className='plat-btn px-2 py-2 rounded-lg border text-sm font-semibold '+(a?'bg-gray-900 text-white border-gray-900':'bg-white');
+  });
+  document.querySelectorAll('.dev-btn').forEach(b=>{
+    const a = b.dataset.device===state.device;
+    b.className='dev-btn px-2 py-2 rounded-lg border text-sm '+(a?'bg-gray-900 text-white border-gray-900':'bg-white');
+  });
+  document.getElementById('darkToggle').checked = state.dark;
+  document.getElementById('contactName').value = state.contact.name;
+  document.getElementById('contactUsername').value = state.contact.username||'';
+  document.getElementById('onlineToggle').checked = state.contact.online;
+  document.getElementById('verifiedToggle').checked = state.contact.verified;
+  document.getElementById('lastSeen').value = state.contact.lastSeen||'';
+  document.getElementById('statusTime').value = state.contact.statusTime||'';
+  document.getElementById('avatarPreview').src = state.contact.avatar||defaultAvatar;
+
+  root.className = 'phone-frame '+state.device;
+  root.classList.toggle('dark', state.dark);
+  // dark mode scoped to phone only (not whole page)
+
+  if(state.platform==='whatsapp') renderWA();
+  else if(state.platform==='instagram') renderIG();
+  else renderTT();
+
+  renderEditor();
+}
+
+function statusBar(textColor){
+  const t = esc(state.contact.statusTime||'9:41');
+  const signal = `<svg viewBox="0 0 18 12" style="width:18px;height:12px;color:${textColor}" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="7" rx="0.5"/><rect x="10" y="2" width="3" height="10" rx="0.5"/><rect x="15" y="0" width="3" height="12" rx="0.5"/></svg>`;
+  const wifi = `<svg viewBox="0 0 16 12" style="width:16px;height:12px;color:${textColor}" fill="currentColor"><path d="M8 11.5l2-2.5a2.5 2.5 0 0 0-4 0l2 2.5zM3 6.5l1.5 1.8a5 5 0 0 1 7 0L13 6.5a7 7 0 0 0-10 0zM0 3.5l1.5 1.8a9.5 9.5 0 0 1 13 0L16 3.5a11.5 11.5 0 0 0-16 0z"/></svg>`;
+  const battery = `<svg viewBox="0 0 26 12" style="width:26px;height:12px;color:${textColor}" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.5" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5" fill="currentColor"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>`;
+  if(state.device==='android'){
+    return `<div class="status-bar" style="color:${textColor};background:transparent;">
+      <span>${t}</span>
+      <span style="display:flex;gap:6px;align-items:center;">${signal}${wifi}${battery}</span>
+    </div>`;
+  }
+  return `<div class="status-bar" style="color:${textColor};">
+    <span>${t}</span>
+    <span style="display:flex;gap:6px;align-items:center;">${signal}${wifi}${battery}</span>
+  </div>`;
+}
+function navHome(color){
+  if(state.device==='android'){
+    return `<div class="nav-home" style="color:${color}">
+      <span class="pill tri"></span><span class="pill cir"></span><span class="pill sq"></span>
+    </div>`;
+  }
+  return `<div class="nav-home" style="color:${color}"><span class="bar"></span></div>`;
+}
+
+/* -------- WhatsApp -------- */
+function renderWA(){
+  const dark = state.dark;
+  const headBg = dark?'var(--wa-header-dark)':'var(--wa-header-light)';
+  const headFg = '#fff';
+  const bg = dark?'wa-doodle-dark':'wa-doodle-light';
+  screen.style.background = dark?'var(--wa-bg-dark)':'var(--wa-bg-light)';
+
+  const msgs = state.messages.map(m=>{
+    const side = m.side==='out'?'out':'in';
+    if(m.type==='image'){
+      return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:2px 0;">
+        <div class="wa-bubble ${side}" style="padding:3px;">
+          <img src="${m.image}" style="display:block;max-width:240px;border-radius:6px;"/>
+          ${m.text?`<div class="bubble" dir="${dirOf(m.text)}" style="padding:4px 6px 0;">${esc(m.text)}</div>`:''}
+          <span class="wa-meta">${esc(m.time||'')} ${side==='out'?statusTick(m.status):''}</span>
+        </div>
+      </div>`;
+    }
+    return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:2px 0;">
+      <div class="wa-bubble ${side}">
+        <span class="bubble" dir="${dirOf(m.text)}">${esc(m.text)}</span>
+        <span class="wa-meta">${esc(m.time||'')} ${side==='out'?statusTick(m.status):''}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const verified = state.contact.verified?'<span class="verified">✓</span>':'';
+  const subtitle = state.contact.online ? 'online' : esc(state.contact.lastSeen||'');
+
+  const inputBg = dark?'#1f2c33':'#f0f2f5';
+  const inputFieldBg = dark?'#2a3942':'#ffffff';
+  const inputFg = dark?'#aebac1':'#54656f';
+
+  screen.innerHTML = `
+    ${statusBar(headFg)}
+    <div style="background:${headBg};color:${headFg};display:flex;align-items:center;gap:10px;padding:6px 12px;flex-shrink:0;">
+      <span style="display:inline-flex;color:${headFg}">${ICONS.waBack}</span>
+      <img src="${state.contact.avatar||defaultAvatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;"/>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:15px;display:flex;align-items:center;gap:4px;">${esc(state.contact.name)} ${verified}</div>
+        <div style="font-size:12px;opacity:.85;">${subtitle}</div>
+      </div>
+      <span style="color:${headFg};display:inline-flex;">${ICONS.waVideo}</span>
+      <span style="color:${headFg};display:inline-flex;">${ICONS.waPhone}</span>
+      <span style="color:${headFg};display:inline-flex;">${ICONS.waMenu}</span>
+    </div>
+    <div class="${bg}" style="flex:1;overflow:hidden;padding:8px 8px 12px;display:flex;flex-direction:column;gap:2px;">
+      ${msgs}
+    </div>
+    <div style="background:${inputBg};padding:6px 8px;display:flex;align-items:center;gap:6px;flex-shrink:0;">
+      <div style="flex:1;background:${inputFieldBg};border-radius:24px;padding:8px 10px;display:flex;align-items:center;gap:8px;color:${inputFg};font-size:14px;">
+        <span style="display:inline-flex;color:${inputFg}">${ICONS.waEmoji}</span>
+        <span style="flex:1;">Message</span>
+        <span style="display:inline-flex;color:${inputFg}">${ICONS.waPaperclip}</span>
+        <span style="display:inline-flex;color:${inputFg}">${ICONS.waCamera}</span>
+      </div>
+      <div style="width:40px;height:40px;border-radius:50%;background:${dark?'#00a884':'#008069'};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;">
+        ${ICONS.waMic}
+      </div>
+    </div>
+    ${navHome(dark?'#fff':'#54656f')}
+  `;
+  const home = screen.querySelector('.nav-home');
+  if(home){ home.style.background = inputBg; home.style.color = dark?'#fff':'#54656f'; }
+}
+
+/* -------- Instagram -------- */
+function renderIG(){
+  const dark = state.dark;
+  screen.style.background = dark?'#000':'#fff';
+  const fg = dark?'#fff':'#000';
+  const subFg = dark?'#a8a8a8':'#737373';
+
+  const msgs = state.messages.map(m=>{
+    const side = m.side==='out'?'out':'in';
+    if(m.type==='image'){
+      return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:3px 0;">
+        <img src="${m.image}" style="max-width:220px;border-radius:18px;"/>
+      </div>`;
+    }
+    return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:2px 0;">
+      <div class="ig-bubble ${side}"><span class="bubble" dir="${dirOf(m.text)}">${esc(m.text)}</span></div>
+    </div>`;
+  }).join('');
+
+  const verified = state.contact.verified?'<span class="verified" style="margin-left:3px;">✓</span>':'';
+
+  screen.innerHTML = `
+    ${statusBar(fg)}
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 14px;border-bottom:1px solid ${dark?'#262626':'#dbdbdb'};color:${fg};flex-shrink:0;">
+      <span style="display:inline-flex;color:${fg}">${ICONS.igBack}</span>
+      <div class="ig-gradient-ring"><img src="${state.contact.avatar||defaultAvatar}" style="width:34px;height:34px;border-radius:50%;display:block;border:2px solid ${dark?'#000':'#fff'};object-fit:cover;"/></div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:14px;display:flex;align-items:center;">${esc(state.contact.name)} ${verified}</div>
+        <div style="font-size:12px;color:${subFg};">${state.contact.online?'Active now':esc(state.contact.lastSeen||'Active recently')}</div>
+      </div>
+      <span style="display:inline-flex;color:${fg}">${ICONS.igPhone}</span>
+      <span style="display:inline-flex;color:${fg}">${ICONS.igVideo}</span>
+    </div>
+    <div class="ig-screen" style="flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:${dark?'#000':'#fff'};color:${fg};">
+      ${msgs}
+    </div>
+    <div style="padding:8px 10px;border-top:1px solid ${dark?'#262626':'#dbdbdb'};display:flex;align-items:center;gap:8px;color:${subFg};font-size:13px;flex-shrink:0;">
+      <span style="width:30px;height:30px;border-radius:50%;background:#0095f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ICONS.igCamera}</span>
+      <span style="flex:1;border:1px solid ${dark?'#363636':'#dbdbdb'};border-radius:20px;padding:7px 12px;display:flex;align-items:center;gap:8px;">
+        <span style="flex:1;">Message...</span>
+        <span style="display:inline-flex;color:${subFg}">${ICONS.igMic}</span>
+        <span style="display:inline-flex;color:${subFg}">${ICONS.igImage}</span>
+        <span style="display:inline-flex;color:${subFg}">${ICONS.igSticker}</span>
+      </span>
+      <span style="display:inline-flex;color:${fg}">${ICONS.igHeart}</span>
+    </div>
+    ${navHome(fg)}
+  `;
+}
+
+/* -------- TikTok -------- */
+function renderTT(){
+  const dark = state.dark;
+  screen.style.background = dark?'#121212':'#fff';
+  const fg = dark?'#fff':'#161823';
+  const subFg = dark?'#a8a8a8':'#86878b';
+
+  const msgs = state.messages.map(m=>{
+    const side = m.side==='out'?'out':'in';
+    if(m.type==='image'){
+      return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:3px 0;">
+        <img src="${m.image}" style="max-width:220px;border-radius:14px;"/>
+      </div>`;
+    }
+    return `<div style="display:flex;justify-content:${side==='out'?'flex-end':'flex-start'};margin:2px 0;">
+      <div class="tt-bubble ${side}"><span class="bubble" dir="${dirOf(m.text)}">${esc(m.text)}</span></div>
+    </div>`;
+  }).join('');
+
+  const verified = state.contact.verified?'<span class="verified" style="margin-left:3px;">✓</span>':'';
+
+  screen.innerHTML = `
+    ${statusBar(fg)}
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid ${dark?'#222':'#ececec'};color:${fg};flex-shrink:0;">
+      <span style="display:inline-flex;color:${fg}">${ICONS.ttBack}</span>
+      <img src="${state.contact.avatar||defaultAvatar}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;"/>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:14px;display:flex;align-items:center;">${esc(state.contact.name)} ${verified}</div>
+        <div style="font-size:12px;color:${subFg};">@${esc(state.contact.username||'user')}</div>
+      </div>
+      <span style="display:inline-flex;color:${fg}">${ICONS.ttFlag}</span>
+    </div>
+    <div class="tt-screen" style="flex:1;overflow:hidden;padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:${dark?'#121212':'#fff'};color:${fg};">
+      ${msgs}
+    </div>
+    <div style="padding:8px 10px;border-top:1px solid ${dark?'#222':'#ececec'};display:flex;align-items:center;gap:8px;color:${subFg};font-size:13px;flex-shrink:0;background:${dark?'#1a1a1a':'#f8f8f8'};">
+      <span style="flex:1;background:${dark?'#2a2a2a':'#fff'};border-radius:18px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+        <span style="flex:1;">Send a message...</span>
+        <span style="display:inline-flex;color:${subFg}">${ICONS.ttEmoji}</span>
+        <span style="display:inline-flex;color:${subFg}">${ICONS.ttImage}</span>
+      </span>
+      <span style="color:#fe2c55;font-weight:700;">Send</span>
+    </div>
+    ${navHome(fg)}
+  `;
+}
+
+/* ==================== Editor list ==================== */
+function renderEditor(){
+  const list = document.getElementById('msgList');
+  list.innerHTML = state.messages.map((m,i)=>`
+    <li class="msg-row border rounded-lg p-2 bg-white" data-id="${m.id}">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="grip text-gray-400 select-none">⋮⋮</span>
+        <select data-act="side" class="text-xs border rounded px-1 py-0.5">
+          <option value="in" ${m.side==='in'?'selected':''}>← Receiver</option>
+          <option value="out" ${m.side==='out'?'selected':''}>Sender →</option>
+        </select>
+        <input data-act="time" value="${esc(m.time||'')}" placeholder="10:24" class="text-xs border rounded px-1 py-0.5 w-16"/>
+        <select data-act="status" class="text-xs border rounded px-1 py-0.5">
+          <option value="sent" ${m.status==='sent'?'selected':''}>✓ sent</option>
+          <option value="delivered" ${m.status==='delivered'?'selected':''}>✓✓ delivered</option>
+          <option value="read" ${m.status==='read'?'selected':''}>✓✓ read</option>
+        </select>
+        <button data-act="del" class="ml-auto text-red-500 text-sm" title="Delete">✕</button>
+      </div>
+      ${m.type==='image'
+        ? `<div class="flex gap-2 items-start">
+             <img src="${m.image}" class="w-16 h-16 object-cover rounded"/>
+             <input data-act="text" value="${esc(m.text||'')}" placeholder="Caption (optional)" class="flex-1 border rounded px-2 py-1 text-sm"/>
+           </div>`
+        : `<textarea data-act="text" rows="2" class="w-full border rounded px-2 py-1 text-sm" placeholder="Message...">${esc(m.text||'')}</textarea>`
+      }
+    </li>
+  `).join('');
+
+  list.querySelectorAll('li').forEach(li=>{
+    const id = li.dataset.id;
+    li.querySelectorAll('[data-act]').forEach(el=>{
+      const act = el.dataset.act;
+      const evt = el.tagName==='SELECT'?'change':(el.tagName==='INPUT'&&el.type!=='file'?'change':'change');
+      el.addEventListener(evt, ()=>{
+        const m = state.messages.find(x=>x.id===id); if(!m) return;
+        if(act==='del'){ state.messages = state.messages.filter(x=>x.id!==id); commit(); return; }
+        m[act] = el.value;
+        commit();
+      });
+      if(el.tagName==='TEXTAREA'||(el.tagName==='INPUT'&&el.type==='text')){
+        el.addEventListener('input', ()=>{
+          const m = state.messages.find(x=>x.id===id); if(!m) return;
+          m[act] = el.value;
+          save();
+          if(state.platform==='whatsapp') renderWA();
+          else if(state.platform==='instagram') renderIG();
+          else renderTT();
+        });
+        el.addEventListener('blur', ()=>commit());
+      }
+    });
+    li.querySelector('[data-act=del]').addEventListener('click', ()=>{
+      state.messages = state.messages.filter(x=>x.id!==id); commit();
+    });
+  });
+
+  if(window._sortable) window._sortable.destroy();
+  window._sortable = Sortable.create(list,{
+    handle:'.grip', animation:150, ghostClass:'dragging',
+    onEnd(){
+      const ids = [...list.querySelectorAll('li')].map(l=>l.dataset.id);
+      state.messages.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));
+      commit();
+    }
+  });
+}
+
+/* ==================== Wire up ==================== */
+document.querySelectorAll('.plat-btn').forEach(b=>b.addEventListener('click',()=>{state.platform=b.dataset.platform;commit();}));
+document.querySelectorAll('.dev-btn').forEach(b=>b.addEventListener('click',()=>{state.device=b.dataset.device;commit();}));
+document.getElementById('darkToggle').addEventListener('change',e=>{state.dark=e.target.checked;commit();});
+['contactName','contactUsername','lastSeen','statusTime'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',e=>{
+    const key = id==='contactName'?'name':id==='contactUsername'?'username':id==='lastSeen'?'lastSeen':'statusTime';
+    state.contact[key]=e.target.value; save(); render();
+  });
+  document.getElementById(id).addEventListener('blur',()=>commit());
+});
+document.getElementById('onlineToggle').addEventListener('change',e=>{state.contact.online=e.target.checked;commit();});
+document.getElementById('verifiedToggle').addEventListener('change',e=>{state.contact.verified=e.target.checked;commit();});
+document.getElementById('avatarInput').addEventListener('change',async e=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  state.contact.avatar = await fileToDataURL(f); commit();
+});
+document.getElementById('addTextBtn').addEventListener('click',()=>{
+  state.messages.push({id:uid(),type:'text',side:'out',text:'New message',time:nowHM(),status:'read'}); commit();
+});
+document.getElementById('addImageInput').addEventListener('change',async e=>{
+  const f=e.target.files?.[0]; if(!f) return;
+  const url = await fileToDataURL(f);
+  state.messages.push({id:uid(),type:'image',side:'out',image:url,text:'',time:nowHM(),status:'delivered'});
+  commit(); e.target.value='';
+});
+document.getElementById('undoBtn').addEventListener('click',undo);
+document.getElementById('redoBtn').addEventListener('click',redo);
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();e.shiftKey?redo():undo();}
+});
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  try {
+    // 1. Target the phone screen to ignore the frame chassis and notch
+    const targetEl = document.getElementById('phoneScreen');
+    
+    // 2. Determine base colors dynamically
+    const bgColor = state.dark ? 'var(--wa-bg-dark)' : 'var(--wa-bg-light)';
+
+    let config = {
+      pixelRatio: 2,
+      cacheBust: true,
+      backgroundColor: bgColor,
+      style: {
+        borderRadius: '0px' // Removes round screen corners for a clean square image export
+      }
+    };
+
+    // 3. Inject configuration directly if downloading a WhatsApp mockup
+    if (state.platform === 'whatsapp') {
+      config.style.backgroundImage = 'url("doodle.png")';
+      config.style.backgroundRepeat = 'repeat';
+      config.style.backgroundSize = '400px';
+      
+      if (state.dark) {
+        config.style.backgroundBlendMode = 'multiply';
+        // In some browsers canvas filters help render multi-layered effects smoothly
+        config.style.filter = 'brightness(0.55) saturate(0.7)'; 
+      }
+    }
+
+    const dataUrl = await htmlToImage.toPng(targetEl, config);
+
+    const a = document.createElement('a');
+    a.download = `chat-mockup-${state.platform}-${Date.now()}.png`;
+    a.href = dataUrl; 
+    a.click();
+  } catch(err) {
+    console.error(err);
+    alert('Export failed: ' + err.message);
+  }
+});
+
+function fileToDataURL(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f);});}
+function nowHM(){const d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
+
+document.getElementById('year').textContent = new Date().getFullYear();
+render();
+
+/* PWA registration */
+if('serviceWorker' in navigator && location.protocol==='https:' && !location.hostname.includes('preview--') && !location.hostname.includes('lovableproject')){
+  // skip auto SW; manifest-only
+}
+</script>
+</body>
+</html>
